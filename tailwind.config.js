@@ -6,6 +6,9 @@ module.exports = {
             colors: {
                 primaryBG: '#F1D4B3',
                 secondary: '#262626',
+                btnPrimary: '#473A2B',
+                btnHover: '#322618',
+                borderColor: 'rgba(0,0,0,0.08)',
             },
             fontFamily: {
                 montserrat: ['Montserrat'],
