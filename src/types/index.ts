@@ -15,3 +15,25 @@ export type InputProps = {
     className?: string;
     [key: string]: any;
 };
+
+export type Todo = {
+    id: string;
+    isCompleted: boolean;
+    task: string;
+};
+
+export type UserTodos = {
+    [id: string]: Todo;
+};
+
+export type UseUserTodosResponse = {
+    userTodos: Todo[];
+    loading: boolean;
+    error?: string;
+};
+
+export type CallbackResponse = {
+    success: boolean;
+    data: any;
+    message?: string;
+};
