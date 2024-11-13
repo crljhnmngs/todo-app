@@ -1,3 +1,5 @@
+import { ToastOptions } from 'react-toastify';
+
 export type ButtonProps = {
     buttonType: 'Primary' | 'Secondary' | 'Danger';
     className?: string;
@@ -34,4 +36,34 @@ export type CallbackResponse = {
     success: boolean;
     data: any;
     message?: string;
+};
+
+export type UseTodosHookProps = {
+    userId: string;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type AddTodo = {
+    userId: string;
+    todo: string;
+};
+
+type TodoStatusUpdate = {
+    isCompleted: boolean;
+};
+
+export type UpdateTodo = {
+    userId: string;
+    todoId: string;
+    updates: TodoStatusUpdate;
+};
+export type DeleteTodo = {
+    userId: string;
+    todoId: string;
+};
+
+export type CustomToastProps = {
+    message: string;
+    type?: 'success' | 'error' | 'info' | 'warning';
+    options?: ToastOptions;
 };

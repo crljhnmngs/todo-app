@@ -1,40 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input } from '../Input';
 import { Button } from '../Button';
-import { addTodo } from '../../firebase/todo/todoService';
-import { toast, Bounce } from 'react-toastify';
+import useAddTodo from '../../hooks/Todo/useAddTodo';
 
 export const AddTodoForm = () => {
-    const [todoContent, setTodoContent] = useState<string>('');
     //TODO: Use redux to store and get this user data
     const userId = 'user1';
-    const handleAddTodo = async () => {
-        if (todoContent.trim()) {
-            const response = await addTodo(userId, todoContent.trim());
-            if (response.success) {
-                setTodoContent('');
-                //TODO: Create a custom component for toast
-                toast.success(response.message, {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    progress: undefined,
-                    transition: Bounce,
-                });
-            } else {
-                //TODO: Create a custom component for toast
-                toast.error(response.message, {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    progress: undefined,
-                    transition: Bounce,
-                });
-            }
-        }
-    };
+    const { todoContent, setTodoContent, handleAddTodo } = useAddTodo(userId);
 
     return (
         <form
