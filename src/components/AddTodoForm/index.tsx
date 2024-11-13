@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from '../Input';
 import { Button } from '../Button';
-import useAddTodo from '../../hooks/Todo/useAddTodo';
+import useAddTodo from '../../hooks/todo/useAddTodo';
 
 export const AddTodoForm = () => {
     //TODO: Use redux to store and get this user data

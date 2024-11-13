@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Loading } from '../../components/Loading';
-import useUserTodos from '../../hooks/Todo/useUserTodos';
+import useUserTodos from '../../hooks/todo/useUserTodos';
 import { Todo } from '../../types';
 import { capitalizeFirstLetter } from '../../lib/utils';
-import useDeleteTodo from '../../hooks/Todo/userDeleteTodo';
-import { useUpdateTodoStatus } from '../../hooks/Todo/useUpdateTodoStatus';
+import useDeleteTodo from '../../hooks/todo/userDeleteTodo';
+import { useUpdateTodoStatus } from '../../hooks/todo/useUpdateTodoStatus';
 
 export const TodosList = () => {
     //TODO: Use redux to store and get this user data
