@@ -28,8 +28,6 @@ export type UserTodos = {
 
 export type UseUserTodosResponse = {
     userTodos: Todo[];
-    loading: boolean;
-    error?: string;
 };
 
 export type CallbackResponse = {

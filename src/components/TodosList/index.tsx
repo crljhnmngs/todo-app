@@ -1,25 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Loading } from '../../components/Loading';
 import useUserTodos from '../../hooks/useUserTodos';
 import { Todo } from '../../types';
-import { toast, Bounce } from 'react-toastify';
 import { capitalizeFirstLetter } from '../../lib/utils';
+import useDeleteTodo from '../../hooks/userDeleteTodo';
 
 export const TodosList = () => {
     //TODO: Use redux to store and get this user data
     const userId = 'user1';
-    const { userTodos, loading, error } = useUserTodos(userId);
-    //TODO: Create a custom component for toast
-    if (error) {
-        toast.error(error, {
-            position: 'top-right',
-            autoClose: 5000,
-            closeOnClick: true,
-            pauseOnHover: true,
-            progress: undefined,
-            transition: Bounce,
-        });
-    }
+    const [loading, setLoading] = useState<boolean>(false);
+    const { userTodos } = useUserTodos(userId, setLoading);
+    const { handleDeleteTodo } = useDeleteTodo(userId, setLoading);
+
     return (
         <React.Fragment>
             {loading && <Loading />}
@@ -35,7 +27,12 @@ export const TodosList = () => {
                             >
                                 {capitalizeFirstLetter(todo.task)}
                             </span>
-                            <button className="pr-2">❌</button>
+                            <button
+                                className="pr-2"
+                                onClick={() => handleDeleteTodo(todo.id)}
+                            >
+                                ❌
+                            </button>
                         </li>
                     ))}
                 </ul>

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { onUserTodosUpdate } from '../firebase/todo/todoService';
 import { UseUserTodosResponse, UserTodos, Todo } from '../types';
+import { toast, Bounce } from 'react-toastify';
 
-const useUserTodos = (userId: string): UseUserTodosResponse => {
+const useUserTodos = (
+    userId: string,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+): UseUserTodosResponse => {
     const [userTodos, setUserTodos] = useState<UserTodos[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>();
 
     useEffect(() => {
         setLoading(true);
@@ -13,13 +15,20 @@ const useUserTodos = (userId: string): UseUserTodosResponse => {
             if (response.success) {
                 setUserTodos(response.data);
             } else {
-                setError(response.message);
+                toast.error(response.message, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    progress: undefined,
+                    transition: Bounce,
+                });
             }
             setLoading(false);
         });
 
         return () => unsubscribe();
-    }, [userId]);
+    }, [userId, setLoading]);
 
     const extractedData = userTodos.flatMap((obj: UserTodos) =>
         Object.entries(obj).map(
@@ -31,7 +40,7 @@ const useUserTodos = (userId: string): UseUserTodosResponse => {
         )
     );
 
-    return { userTodos: extractedData, loading, error };
+    return { userTodos: extractedData };
 };
 
 export default useUserTodos;
