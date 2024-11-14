@@ -1,11 +1,15 @@
 import React from 'react';
+import { TodosHeaderProps } from '../../types';
 
-export const Counter = () => {
+export const Counter = ({
+    totalTodosCount,
+    totalCompletedTodosCount,
+}: TodosHeaderProps) => {
     return (
         <div className="flex gap-1">
-            <span className="font-semibold">0</span>
+            <span className="font-semibold">{totalCompletedTodosCount}</span>
             <span>/</span>
-            <span>3</span>
+            <span>{totalTodosCount}</span>
             <span className="pl-2">todos completed</span>
         </div>
     );

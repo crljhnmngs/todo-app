@@ -1,18 +1,11 @@
 import { useState, useEffect } from 'react';
 import { onUserTodosUpdate } from '../../firebase/todo/todoService';
-import {
-    UseUserTodosResponse,
-    UserTodos,
-    Todo,
-    UseTodosHookProps,
-} from '../../types';
+import { UseUserTodosResponse, UserTodos, Todo } from '../../types';
 import { customToast } from '../../lib/utils';
 
-const useUserTodos = ({
-    userId,
-    setLoading,
-}: UseTodosHookProps): UseUserTodosResponse => {
+const useUserTodos = (userId: string): UseUserTodosResponse => {
     const [userTodos, setUserTodos] = useState<UserTodos[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     let extractedData: Todo[];
 
     useEffect(() => {
@@ -59,7 +52,7 @@ const useUserTodos = ({
         });
     }
 
-    return { userTodos: extractedData };
+    return { userTodos: extractedData, loading };
 };
 
 export default useUserTodos;

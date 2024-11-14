@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { addTodo } from '../../firebase/todo/todoService';
 import { customToast } from '../../lib/utils';
-
-interface AddTodoResponse {
-    success: boolean;
-    message: string;
-}
+import { AddTodoResponse } from '../../types';
 
 const useAddTodo = (userId: string) => {
     const [todoContent, setTodoContent] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
     const handleAddTodo = async () => {
         try {
             if (todoContent.trim()) {
+                setLoading(true);
                 const response: AddTodoResponse = await addTodo({
                     userId,
                     todo: todoContent.trim(),
@@ -28,6 +26,8 @@ const useAddTodo = (userId: string) => {
                 message: 'An error occurred while adding the todo',
                 type: 'error',
             });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -35,6 +35,7 @@ const useAddTodo = (userId: string) => {
         todoContent,
         setTodoContent,
         handleAddTodo,
+        loading,
     };
 };
 

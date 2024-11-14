@@ -30,6 +30,7 @@ export type UserTodos = {
 
 export type UseUserTodosResponse = {
     userTodos: Todo[];
+    loading: boolean;
 };
 
 export type CallbackResponse = {
@@ -66,4 +67,18 @@ export type CustomToastProps = {
     message: string;
     type?: 'success' | 'error' | 'info' | 'warning';
     options?: ToastOptions;
+};
+
+export type TodosListProps = {
+    userTodos: Todo[];
+};
+
+export type AddTodoResponse = {
+    success: boolean;
+    message: string;
+};
+
+export type TodosHeaderProps = {
+    totalTodosCount: number;
+    totalCompletedTodosCount: number;
 };
