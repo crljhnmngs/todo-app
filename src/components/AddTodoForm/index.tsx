@@ -14,6 +14,7 @@ export const AddTodoForm = () => {
         <React.Fragment>
             {loading && <Loading />}
             <form
+                data-testid="addTodoForm"
                 onSubmit={(e) => {
                     e.preventDefault();
                     handleAddTodo();
