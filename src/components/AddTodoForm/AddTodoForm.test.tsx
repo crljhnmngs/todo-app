@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { AddTodoForm } from './index';
+import { AddTodoForm } from '.';
 import useAddTodo from '../../hooks/todo/useAddTodo';
 
 jest.mock('../Input', () => ({

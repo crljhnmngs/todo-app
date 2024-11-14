@@ -8,7 +8,6 @@ export const cn = (...inputs: ClassValue[]) => {
 };
 
 export const handleError = (error: any, actionDescription: string) => {
-    console.error(`Error during ${actionDescription}:`, error);
     return {
         success: false,
         message: `Failed to complete ${actionDescription}. Please try again later.`,

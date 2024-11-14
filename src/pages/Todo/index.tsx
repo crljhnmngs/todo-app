@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TodosHeader } from '../../components/TodosHeader';
 import { TodosSidebar } from '../../components/TodosSidebar';
 import { TodosList } from '../../components/TodosList';
@@ -9,10 +9,14 @@ export const Todo = () => {
     //TODO: Use redux to store and get this user data
     const userId = 'user1';
     const { userTodos, loading } = useUserTodos(userId);
-    const totalTodosCount: number = userTodos.length;
-    const totalCompletedTodosCount: number = userTodos.filter(
-        (todo) => todo.isCompleted
-    ).length;
+    const totalTodosCount: number = useMemo(
+        () => userTodos.length,
+        [userTodos]
+    );
+    const totalCompletedTodosCount: number = useMemo(
+        () => userTodos.filter((todo) => todo.isCompleted).length,
+        [userTodos]
+    );
 
     return (
         <React.Fragment>

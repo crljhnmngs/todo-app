@@ -7,6 +7,7 @@ export const Button = ({
     className,
     onClick,
     children,
+    ...props
 }: ButtonProps) => {
     return (
         <button
@@ -16,6 +17,7 @@ export const Button = ({
                 _0.2s] ${buttonType === 'Secondary' ? 'text-sm opacity-85' : buttonType === 'Danger' ? 'bg-red-800 hover:bg-red-900' : ''}`,
                 className
             )}
+            {...props}
         >
             {children}
         </button>

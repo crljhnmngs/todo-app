@@ -5,6 +5,7 @@ export type ButtonProps = {
     className?: string;
     onClick: () => void;
     children: React.ReactNode;
+    [key: string]: any;
 };
 
 export type InputProps = {
@@ -13,7 +14,7 @@ export type InputProps = {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
-    error?: string;
+    error?: boolean;
     className?: string;
     [key: string]: any;
 };
