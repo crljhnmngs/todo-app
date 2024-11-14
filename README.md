@@ -10,6 +10,7 @@ This is a simple todo app, built using React, TypeScript and Firebase.
 - **Tailwind**
 - **Firebase**
 - **Redux**
+- **Jest**
 
 ## Installation
 
