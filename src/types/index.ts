@@ -1,4 +1,5 @@
 import { ToastOptions } from 'react-toastify';
+import { UseFormRegister, RegisterOptions } from 'react-hook-form';
 
 export type ButtonProps = {
     buttonType: 'Primary' | 'Secondary' | 'Danger';
@@ -11,11 +12,11 @@ export type ButtonProps = {
 export type InputProps = {
     name: string;
     type?: 'text' | 'email' | 'password' | 'number' | 'date';
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
-    error?: boolean;
     className?: string;
+    register: UseFormRegister<any>;
+    rules?: RegisterOptions;
+    error?: string;
     [key: string]: any;
 };
 
@@ -82,4 +83,8 @@ export type AddTodoResponse = {
 export type TodosHeaderProps = {
     totalTodosCount: number;
     totalCompletedTodosCount: number;
+};
+
+export type TodoFormData = {
+    inputTodo: string;
 };

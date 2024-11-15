@@ -1,26 +1,29 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Input } from '.';
 import '@testing-library/jest-dom';
 
-describe('Input Component', () => {
-    const mockOnChange = jest.fn();
+const mockRegister = jest.fn();
+//Added mock for onChange to remove warning.
+const mockOnChange = jest.fn();
 
+describe('Input Component', () => {
     const renderInput = (props = {}) => {
         return render(
             <Input
                 name="username"
                 type="text"
-                value=""
                 onChange={mockOnChange}
+                value=""
                 placeholder="Enter username"
+                register={mockRegister}
                 {...props}
             />
         );
     };
 
     afterEach(() => {
-        mockOnChange.mockClear();
+        jest.clearAllMocks();
     });
 
     it('should render the input with default props', () => {
@@ -28,14 +31,6 @@ describe('Input Component', () => {
         const input = screen.getByPlaceholderText('Enter username');
         expect(input).toBeInTheDocument();
         expect(input).toHaveAttribute('type', 'text');
-        expect(input).toHaveAttribute('name', 'username');
-    });
-
-    it('should trigger onChange when input value changes', () => {
-        renderInput();
-        const input = screen.getByPlaceholderText('Enter username');
-        fireEvent.change(input, { target: { value: 'new username' } });
-        expect(mockOnChange).toHaveBeenCalledTimes(1);
     });
 
     it('should apply error styles when error prop is true', () => {
@@ -54,5 +49,10 @@ describe('Input Component', () => {
         renderInput({ className: 'custom-class' });
         const input = screen.getByPlaceholderText('Enter username');
         expect(input).toHaveClass('custom-class');
+    });
+
+    it('should call register function with correct arguments', () => {
+        renderInput();
+        expect(mockRegister).toHaveBeenCalledWith('username', undefined);
     });
 });

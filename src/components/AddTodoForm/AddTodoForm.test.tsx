@@ -4,8 +4,15 @@ import { AddTodoForm } from '.';
 import useAddTodo from '../../hooks/todo/useAddTodo';
 
 jest.mock('../Input', () => ({
-    Input: jest.fn(({ value, onChange }) => (
-        <input data-testid="mock-input" value={value} onChange={onChange} />
+    Input: jest.fn(({ error, register, ...props }) => (
+        <div>
+            <input
+                data-testid="mock-input"
+                {...register('inputTodo')}
+                {...props}
+            />
+            {error && <span>{error}</span>}
+        </div>
     )),
 }));
 
@@ -21,13 +28,10 @@ jest.mock('../../firebase/todo/todoService');
 const mockedUseAddTodo = useAddTodo as jest.MockedFunction<typeof useAddTodo>;
 
 describe('AddTodoForm', () => {
-    const setTodoContentMock = jest.fn();
     const handleAddTodoMock = jest.fn();
 
     beforeEach(() => {
         mockedUseAddTodo.mockReturnValue({
-            todoContent: '',
-            setTodoContent: setTodoContentMock,
             handleAddTodo: handleAddTodoMock,
             loading: false,
         });
@@ -37,44 +41,76 @@ describe('AddTodoForm', () => {
         jest.clearAllMocks();
     });
 
-    it('should renders input and button', () => {
+    it('should render input and button', async () => {
         render(<AddTodoForm />);
 
         const input = screen.getByTestId('mock-input');
         const button = screen.getByRole('button', { name: /Add to list/i });
 
-        expect(input).toBeInTheDocument();
-        expect(button).toBeInTheDocument();
+        await waitFor(() => {
+            expect(input).toBeInTheDocument();
+        });
+
+        await waitFor(() => {
+            expect(button).toBeInTheDocument();
+        });
     });
 
-    it('should displays loading indicator when loading is true', () => {
+    it('should display loading indicator when loading is true', async () => {
         mockedUseAddTodo.mockReturnValue({
-            todoContent: '',
-            setTodoContent: setTodoContentMock,
             handleAddTodo: handleAddTodoMock,
             loading: true,
         });
 
         render(<AddTodoForm />);
 
-        expect(screen.getByText(/loading/i)).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText(/loading/i)).toBeInTheDocument();
+        });
     });
 
-    it('should calls setTodoContent on input change', () => {
-        render(<AddTodoForm />);
-
-        const input = screen.getByTestId('mock-input');
-        fireEvent.change(input, { target: { value: 'New todo' } });
-
-        expect(setTodoContentMock).toHaveBeenCalledWith('New todo');
-    });
-
-    it('should calls handleAddTodo on form submit', async () => {
+    it('should call handleAddTodo with input value when form is submitted', async () => {
         render(<AddTodoForm />);
 
         const form = screen.getByTestId('addTodoForm');
+        const input = screen.getByTestId('mock-input');
+
+        fireEvent.change(input, { target: { value: 'New todo' } });
         fireEvent.submit(form);
 
-        await waitFor(() => expect(handleAddTodoMock).toHaveBeenCalled());
+        await waitFor(() => {
+            expect(handleAddTodoMock).toHaveBeenCalledWith('New todo');
+        });
+    });
+
+    it('should reset input after successful form submission', async () => {
+        render(<AddTodoForm />);
+
+        const form = screen.getByTestId('addTodoForm');
+        const input = screen.getByTestId('mock-input');
+
+        fireEvent.change(input, { target: { value: 'New todo' } });
+
+        fireEvent.submit(form);
+
+        await waitFor(() => {
+            expect(handleAddTodoMock).toHaveBeenCalledWith('New todo');
+        });
+
+        await waitFor(() => {
+            expect(input).toHaveValue('');
+        });
+    });
+
+    it('should not call handleAddTodo with empty input value', async () => {
+        render(<AddTodoForm />);
+
+        const form = screen.getByTestId('addTodoForm');
+
+        fireEvent.submit(form);
+
+        await waitFor(() => {
+            expect(handleAddTodoMock).not.toHaveBeenCalled();
+        });
     });
 });

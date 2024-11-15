@@ -4,9 +4,8 @@ import { customToast } from '../../lib/utils';
 import { AddTodoResponse } from '../../types';
 
 const useAddTodo = (userId: string) => {
-    const [todoContent, setTodoContent] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
-    const handleAddTodo = async () => {
+    const handleAddTodo = async (todoContent: string) => {
         try {
             if (todoContent.trim()) {
                 setLoading(true);
@@ -16,7 +15,6 @@ const useAddTodo = (userId: string) => {
                 });
 
                 if (response.success) {
-                    setTodoContent('');
                 } else {
                     customToast({ message: response.message, type: 'error' });
                 }
@@ -32,8 +30,6 @@ const useAddTodo = (userId: string) => {
     };
 
     return {
-        todoContent,
-        setTodoContent,
         handleAddTodo,
         loading,
     };
