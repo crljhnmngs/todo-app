@@ -1,6 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const NotFound = () => {
+    const navigate = useNavigate();
+
+    const handleGoBack = () => {
+        if (window.history.length > 1) {
+            navigate(-1);
+        } else {
+            navigate('/');
+        }
+    };
+
     return (
         <div className="w-screen h-screen flex items-center justify-center">
             <div className="w-full max-w-lg flex items-center flex-col text-secondary -ml-9 -mt-7">
@@ -17,6 +28,12 @@ export const NotFound = () => {
                 <div className="-mt-4 text-[19px] font-medium uppercase text-center pl-8">
                     <h3>
                         we are sorry, but the page you requested was not found
+                    </h3>
+                    <h3
+                        className="text-sm underline text-blue-600 cursor-pointer"
+                        onClick={handleGoBack}
+                    >
+                        Back
                     </h3>
                 </div>
             </div>

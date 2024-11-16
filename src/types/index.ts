@@ -13,6 +13,7 @@ export type InputProps = {
     name: string;
     type?: 'text' | 'email' | 'password' | 'number' | 'date';
     placeholder?: string;
+    label?: string;
     className?: string;
     register: UseFormRegister<any>;
     rules?: RegisterOptions;
@@ -87,4 +88,8 @@ export type TodosHeaderProps = {
 
 export type TodoFormData = {
     inputTodo: string;
+};
+
+export type InputErrorProps = {
+    message: string;
 };

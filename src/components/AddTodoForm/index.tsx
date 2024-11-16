@@ -26,16 +26,13 @@ export const AddTodoForm = () => {
         <React.Fragment>
             {loading && <Loading />}
             <form data-testid="addTodoForm" onSubmit={handleSubmit(onSubmit)}>
-                <h2 className="text-[#231D15] text-base font-medium">
-                    Add a todo
-                </h2>
                 <Input
                     name="inputTodo"
                     type="text"
+                    label={'Add a todo'}
                     register={register}
-                    rules={{ required: 'Todo is required' }}
+                    rules={{ required: 'required' }}
                     error={errors.inputTodo?.message}
-                    autoFocus
                 />
                 <Button buttonType="Primary" onClick={() => {}}>
                     Add to list

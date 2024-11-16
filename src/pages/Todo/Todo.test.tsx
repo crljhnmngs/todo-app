@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Todo } from '.';
-import { TodosHeader } from '../../components/TodosHeader';
+import { TodosHeader } from '../../components/Header/TodosHeader';
 import { TodosList } from '../../components/TodosList';
 import useUserTodos from '../../hooks/todo/useUserTodos';
 

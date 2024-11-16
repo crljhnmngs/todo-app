@@ -17,6 +17,10 @@ module.exports = {
             letterSpacing: {
                 tightest: '-40px',
             },
+            spacing: {
+                '9/10': '90%',
+                '19/20': '95%',
+            },
         },
     },
     plugins: [],
