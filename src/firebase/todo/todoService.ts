@@ -17,12 +17,13 @@ import {
     AddTodo,
     UpdateTodo,
 } from '../../types';
+import { TODO_APP_COLLECTION } from '../../lib/const';
 
 export const onUserTodosUpdate = (
     userId: string,
     callback: (response: CallbackResponse) => void
 ): (() => void) => {
-    const todosRef = ref(db, `userTodos/${userId}`);
+    const todosRef = ref(db, `${TODO_APP_COLLECTION}/userTodos/${userId}`);
     try {
         const unsubscribe = onValue(
             todosRef,
@@ -59,7 +60,10 @@ export const onUserTodosUpdate = (
 
 export const addTodo = async ({ userId, todo }: AddTodo) => {
     try {
-        const todosRef = ref(db, `userTodos/${userId}/todos`);
+        const todosRef = ref(
+            db,
+            `${TODO_APP_COLLECTION}/userTodos/${userId}/todos`
+        );
         const newTodoRef = push(todosRef);
         const newTodo = {
             task: todo,
@@ -79,7 +83,10 @@ export const updateTodoStatus = async ({
     updates,
 }: UpdateTodo) => {
     try {
-        const todoRef = ref(db, `userTodos/${userId}/todos/${todoId}`);
+        const todoRef = ref(
+            db,
+            `${TODO_APP_COLLECTION}/userTodos/${userId}/todos/${todoId}`
+        );
         await update(todoRef, updates);
         return { success: true, message: 'Todo updated successfully' };
     } catch (error) {
@@ -89,7 +96,10 @@ export const updateTodoStatus = async ({
 
 export const deleteTodo = async ({ userId, todoId }: DeleteTodo) => {
     try {
-        const todoRef = ref(db, `userTodos/${userId}/todos/${todoId}`);
+        const todoRef = ref(
+            db,
+            `${TODO_APP_COLLECTION}/userTodos/${userId}/todos/${todoId}`
+        );
         await remove(todoRef);
         return { success: true, message: 'Todo deleted successfully' };
     } catch (error) {

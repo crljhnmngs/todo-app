@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputErrorProps, InputProps } from '../../types';
+import { InputProps } from '../../types';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MdError } from 'react-icons/md';
@@ -16,7 +16,7 @@ export const Input = ({
     ...props
 }: InputProps) => {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
             <div className="flex justify-between">
                 <label
                     className="text-[#231D15] text-base font-medium"

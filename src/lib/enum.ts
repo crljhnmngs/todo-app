@@ -4,3 +4,9 @@ export enum ROUTES {
     LOGIN = '/login',
     TODO = '/',
 }
+
+export enum GENDER {
+    'Male',
+    'Female',
+    'Others',
+}

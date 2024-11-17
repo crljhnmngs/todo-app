@@ -1,3 +1,5 @@
 import { combineReducers } from 'redux';
-
-export const rootReducer = combineReducers({});
+import countryReducer from '../features/country/countrySlice';
+export const rootReducer = combineReducers({
+    country: countryReducer,
+});

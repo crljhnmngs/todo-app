@@ -1,5 +1,7 @@
 import { ToastOptions } from 'react-toastify';
 import { UseFormRegister, RegisterOptions } from 'react-hook-form';
+import { GENDER } from '../lib/enum';
+import { User } from 'firebase/auth';
 
 export type ButtonProps = {
     buttonType: 'Primary' | 'Secondary' | 'Danger';
@@ -90,6 +92,31 @@ export type TodoFormData = {
     inputTodo: string;
 };
 
-export type InputErrorProps = {
-    message: string;
+export type RegisterFormData = {
+    firstname: string;
+    lastname: string;
+    gender: GENDER;
+    age: number;
+    country: string;
+    province: string;
+    city: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
 };
+
+export type SelectProps = {
+    name: string;
+    label: string;
+    options: object;
+    error?: string;
+    className?: string;
+    placeholder?: string;
+    register: UseFormRegister<any>;
+    rules?: RegisterOptions;
+    [key: string]: any;
+};
+
+export type AuthResponse =
+    | { success: true; user: User; message: string }
+    | { success: false; message: string };

@@ -8,9 +8,25 @@ export const cn = (...inputs: ClassValue[]) => {
 };
 
 export const handleError = (error: any, actionDescription: string) => {
+    let message = '';
+
+    switch (error) {
+        case 'auth/invalid-email':
+            message = 'The email address is badly formatted.';
+            break;
+        case 'auth/email-already-in-use':
+            message = 'The email address is already in use by another account.';
+            break;
+        case 'auth/weak-password':
+            message = 'The password must be 6 characters long or more.';
+            break;
+        default:
+            message = `Failed to complete ${actionDescription}. Please try again later.`;
+            break;
+    }
     return {
         success: false,
-        message: `Failed to complete ${actionDescription}. Please try again later.`,
+        message: message,
     };
 };
 
@@ -47,3 +63,16 @@ export const customToast = ({
     };
     return showToast();
 };
+
+export const emailValidationRule = {
+    required: 'required',
+    pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: 'Invalid email format',
+    },
+};
+
+export const passwordMatchRule = (password: string) => ({
+    required: 'required',
+    validate: (value: string) => value === password || 'not match',
+});
