@@ -1,7 +1,7 @@
 import React from 'react';
 import { MdError } from 'react-icons/md';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '../../lib/utils';
+import { capitalizeFirstLetter, cn } from '../../lib/utils';
 import { SelectProps } from '../../types';
 
 export const Select = ({
@@ -13,8 +13,28 @@ export const Select = ({
     register,
     rules,
     placeholder,
+    loading,
     ...props
 }: SelectProps) => {
+    const renderOptions = () => {
+        if (Array.isArray(options)) {
+            return options.map((option, id) => (
+                <option key={id} value={option.label}>
+                    {option.label}
+                </option>
+            ));
+        }
+
+        if (typeof options === 'object' && options !== null) {
+            return Object.entries(options).map(([key, value]) => (
+                <option key={value} value={value}>
+                    {capitalizeFirstLetter(key)}
+                </option>
+            ));
+        }
+        return null;
+    };
+
     return (
         <div className="flex flex-col w-full">
             <div className="flex justify-between">
@@ -52,13 +72,11 @@ export const Select = ({
                 <option value="" disabled>
                     {placeholder}
                 </option>
-                {Object.keys(options)
-                    .filter((key) => isNaN(Number(key)))
-                    .map((key) => (
-                        <option key={key} value={key}>
-                            {key}
-                        </option>
-                    ))}
+                {loading ? (
+                    <option disabled>Loading...</option>
+                ) : (
+                    renderOptions()
+                )}
             </select>
         </div>
     );

@@ -6,7 +6,7 @@ export enum ROUTES {
 }
 
 export enum GENDER {
-    'Male',
-    'Female',
-    'Others',
+    Male = 'Male',
+    Female = 'Female',
+    Others = 'Others',
 }

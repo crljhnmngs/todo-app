@@ -114,6 +114,7 @@ export type SelectProps = {
     placeholder?: string;
     register: UseFormRegister<any>;
     rules?: RegisterOptions;
+    loading?: boolean;
     [key: string]: any;
 };
 

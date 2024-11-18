@@ -6,6 +6,7 @@ import { deleteUser } from 'firebase/auth';
 
 export const useRegisterUser = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
 
     const handleRegister = async (data: RegisterFormData) => {
         setLoading(true);
@@ -30,6 +31,7 @@ export const useRegisterUser = () => {
                 setLoading(false);
                 return;
             } else {
+                setSuccess(true);
                 customToast({
                     message: saveResult.message,
                     type: 'success',
@@ -47,6 +49,7 @@ export const useRegisterUser = () => {
 
     return {
         handleRegister,
+        success,
         loading,
     };
 };

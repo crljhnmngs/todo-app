@@ -1,21 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Input } from '../Input';
 import { RegisterFormData } from '../../types';
 import { Select } from '../Select';
 import { GENDER } from '../../lib/enum';
 import { Button } from '../Button';
-import { emailValidationRule, passwordMatchRule } from '../../lib/utils';
+import {
+    customToast,
+    emailValidationRule,
+    passwordMatchRule,
+} from '../../lib/utils';
 import { Loading } from '../Loading';
 import { useRegisterUser } from '../../hooks/auth/useRegisterUser';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { AppDispatch } from '../../store/root';
-// import {
-//     selectCountry,
-//     selectCountryError,
-//     selectCountryLoading,
-// } from '../../features/country/counrtySelector';
-// import { fetchCountries } from '../../features/country/countryThunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../store/root';
+import {
+    selectCountry,
+    selectCountryError,
+    selectCountryLoading,
+} from '../../features/address/country/counrtySelector';
+import { fetchCountries } from '../../features/address/country/countryThunks';
+import {
+    selectProvince,
+    selectProvinceError,
+    selectProvinceLoading,
+} from '../../features/address/province/provinceSelector';
+import { fetchProvinces } from '../../features/address/province/provinceThunks';
 
 export const RegisterForm = () => {
     const {
@@ -25,24 +35,68 @@ export const RegisterForm = () => {
         formState: { errors },
         reset,
     } = useForm<RegisterFormData>();
-    const { handleRegister, loading } = useRegisterUser();
+    const { handleRegister, success, loading } = useRegisterUser();
 
     const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
         handleRegister(data);
-        reset();
     };
-
-    //TODO: Apply when API Key is available.
-    //const dispatch = useDispatch<AppDispatch>();
-    //const countries = useSelector(selectCountry);
-    //const loading = useSelector(selectCountryLoading);
-    //const error = useSelector(selectCountryError);
-
-    //useEffect(() => {
-    //    dispatch(fetchCountries());
-    //}, [dispatch]);
-
     const password = watch('password');
+    const country = watch('country');
+
+    useEffect(() => {
+        success && reset();
+    }, [success, reset]);
+
+    const dispatch = useDispatch<AppDispatch>();
+    const countries = useSelector(selectCountry);
+    const countriesLoading = useSelector(selectCountryLoading);
+    const countriesError = useSelector(selectCountryError);
+    const province = useSelector(selectProvince);
+    const provinceLoading = useSelector(selectProvinceLoading);
+    const provinceError = useSelector(selectProvinceError);
+
+    useEffect(() => {
+        dispatch(fetchCountries());
+    }, [dispatch]);
+
+    if (countriesError) {
+        customToast({
+            message: countriesError,
+            type: 'error',
+        });
+    }
+
+    if (provinceError) {
+        customToast({
+            message: provinceError,
+            type: 'error',
+        });
+    }
+    const countryOptions = useMemo(() => {
+        return (
+            countries?.map((country) => ({
+                id: country.id,
+                label: country.name,
+                value: country.iso2,
+            })) || []
+        );
+    }, [countries]);
+
+    useEffect(() => {
+        if (country) {
+            const iso2 = countryOptions
+                .filter((c) => c.label === country)
+                .map((c) => c.value)[0];
+            dispatch(fetchProvinces(iso2));
+        }
+    }, [country, dispatch, countryOptions]);
+
+    const provinceOptions =
+        province?.map((prov) => ({
+            id: prov.id,
+            label: prov.name,
+            value: prov.iso2,
+        })) || [];
 
     return (
         <React.Fragment>
@@ -101,18 +155,20 @@ export const RegisterForm = () => {
                         <Select
                             name="country"
                             label={'Country'}
-                            options={GENDER}
+                            options={countryOptions}
                             placeholder="Select Country"
                             register={register}
+                            loading={countriesLoading}
                             rules={{ required: 'required' }}
                             error={errors.country?.message}
                         />
                         <Select
                             name="province"
                             label={'State/Province'}
-                            options={GENDER}
+                            options={provinceOptions}
                             placeholder="Select State/Province"
                             register={register}
+                            loading={provinceLoading}
                             rules={{ required: 'required' }}
                             error={errors.province?.message}
                         />

@@ -42,7 +42,7 @@ export const saveUserInfo = async (
             country: data.country,
             province: data.province,
             city: data.city,
-            email: data,
+            email: data.email,
         };
 
         const userRef = ref(db, `${TODO_APP_COLLECTION}/users/${userId}`);

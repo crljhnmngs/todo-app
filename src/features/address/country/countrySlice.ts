@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CountryState } from './countryTypes';
+import { AddressState } from '../commonTypes';
 import { fetchCountries } from './countryThunks';
 
-const initialState: CountryState = {
+const initialState: AddressState = {
     data: null,
     loading: false,
     error: null,
 };
 
 const countrySlice = createSlice({
-    name: 'user',
+    name: 'country',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -20,7 +20,7 @@ const countrySlice = createSlice({
             })
             .addCase(
                 fetchCountries.fulfilled,
-                (state, action: PayloadAction<CountryState['data']>) => {
+                (state, action: PayloadAction<AddressState['data']>) => {
                     state.loading = false;
                     state.data = action.payload;
                 }
