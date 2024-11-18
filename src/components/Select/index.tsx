@@ -74,6 +74,8 @@ export const Select = ({
                 </option>
                 {loading ? (
                     <option disabled>Loading...</option>
+                ) : Array.isArray(options) && !options.length ? (
+                    <option disabled>No options available</option>
                 ) : (
                     renderOptions()
                 )}

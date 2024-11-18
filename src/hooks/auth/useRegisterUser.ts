@@ -10,6 +10,7 @@ export const useRegisterUser = () => {
 
     const handleRegister = async (data: RegisterFormData) => {
         setLoading(true);
+        setSuccess(false);
         try {
             const result = await registerUser(data.email, data.password);
             if (!result.success) {

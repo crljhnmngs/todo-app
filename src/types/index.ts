@@ -6,7 +6,7 @@ import { User } from 'firebase/auth';
 export type ButtonProps = {
     buttonType: 'Primary' | 'Secondary' | 'Danger';
     className?: string;
-    onClick: () => void;
+    onClick?: () => void;
     children: React.ReactNode;
     [key: string]: any;
 };
@@ -121,3 +121,9 @@ export type SelectProps = {
 export type AuthResponse =
     | { success: true; user: User; message: string }
     | { success: false; message: string };
+
+export type Options = {
+    id: number;
+    label: string;
+    value: string;
+};

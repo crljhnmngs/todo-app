@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Input } from '../Input';
-import { RegisterFormData } from '../../types';
+import { Options, RegisterFormData } from '../../types';
 import { Select } from '../Select';
 import { GENDER } from '../../lib/enum';
 import { Button } from '../Button';
@@ -18,7 +18,7 @@ import {
     selectCountry,
     selectCountryError,
     selectCountryLoading,
-} from '../../features/address/country/counrtySelector';
+} from '../../features/address/country/countrySelector';
 import { fetchCountries } from '../../features/address/country/countryThunks';
 import {
     selectProvince,
@@ -26,6 +26,12 @@ import {
     selectProvinceLoading,
 } from '../../features/address/province/provinceSelector';
 import { fetchProvinces } from '../../features/address/province/provinceThunks';
+import {
+    selectCity,
+    selectCityError,
+    selectCityLoading,
+} from '../../features/address/city/citySelector';
+import { fetchCities } from '../../features/address/city/cityThunks';
 
 export const RegisterForm = () => {
     const {
@@ -37,72 +43,122 @@ export const RegisterForm = () => {
     } = useForm<RegisterFormData>();
     const { handleRegister, success, loading } = useRegisterUser();
 
-    const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
-        handleRegister(data);
-    };
+    const dispatch = useDispatch<AppDispatch>();
+
+    // Form field watchers
     const password = watch('password');
     const country = watch('country');
+    const province = watch('province');
 
-    useEffect(() => {
-        success && reset();
-    }, [success, reset]);
-
-    const dispatch = useDispatch<AppDispatch>();
+    // Selectors
     const countries = useSelector(selectCountry);
     const countriesLoading = useSelector(selectCountryLoading);
     const countriesError = useSelector(selectCountryError);
-    const province = useSelector(selectProvince);
-    const provinceLoading = useSelector(selectProvinceLoading);
-    const provinceError = useSelector(selectProvinceError);
+    const provinces = useSelector(selectProvince);
+    const provincesLoading = useSelector(selectProvinceLoading);
+    const provincesError = useSelector(selectProvinceError);
+    const cities = useSelector(selectCity);
+    const citiesLoading = useSelector(selectCityLoading);
+    const citiesError = useSelector(selectCityError);
 
+    // Submit Handler
+    const onSubmit: SubmitHandler<RegisterFormData> = useCallback(
+        (data) => {
+            handleRegister(data);
+        },
+        [handleRegister]
+    );
+
+    // Reset form on successful registration
+    useEffect(() => {
+        if (success) {
+            reset();
+            provinceOptions.length = 0;
+            cityOptions.length = 0;
+        }
+    }, [success, reset]);
+
+    // Fetch countries on mount
     useEffect(() => {
         dispatch(fetchCountries());
     }, [dispatch]);
 
-    if (countriesError) {
-        customToast({
-            message: countriesError,
-            type: 'error',
+    // Handle error messages
+    useEffect(() => {
+        const errors = [
+            { error: countriesError, message: 'Error fetching countries' },
+            { error: provincesError, message: 'Error fetching provinces' },
+            { error: citiesError, message: 'Error fetching cities' },
+        ];
+        errors.forEach(({ error, message }) => {
+            if (error) {
+                customToast({ message, type: 'error' });
+            }
         });
-    }
+    }, [countriesError, provincesError, citiesError]);
 
-    if (provinceError) {
-        customToast({
-            message: provinceError,
-            type: 'error',
-        });
-    }
-    const countryOptions = useMemo(() => {
-        return (
+    // Generate options for select country
+    const countryOptions = useMemo(
+        () =>
             countries?.map((country) => ({
                 id: country.id,
                 label: country.name,
                 value: country.iso2,
-            })) || []
-        );
-    }, [countries]);
+            })) || [],
+        [countries]
+    );
 
+    // Generate options for select province
+    let provinceOptions = useMemo(
+        () =>
+            provinces?.map((prov) => ({
+                id: prov.id,
+                label: prov.name,
+                value: prov.iso2,
+            })) || [],
+        [provinces]
+    );
+
+    // Generate options for select city
+    let cityOptions = useMemo(
+        () =>
+            cities?.map((cit) => ({
+                id: cit.id,
+                label: cit.name,
+                value: cit.iso2,
+            })) || [],
+        [cities]
+    );
+
+    // Extract ISO codes
+    const getIso2Value = useCallback(
+        (options: Options[], label: string) =>
+            options.find((opt: any) => opt.label === label)?.value,
+        []
+    );
+
+    const countryIso2 = getIso2Value(countryOptions, country);
+    const provinceIso2 = getIso2Value(provinceOptions, province);
+
+    // Fetch provinces when country changes
     useEffect(() => {
-        if (country) {
-            const iso2 = countryOptions
-                .filter((c) => c.label === country)
-                .map((c) => c.value)[0];
-            dispatch(fetchProvinces(iso2));
+        if (countryIso2) {
+            dispatch(fetchProvinces(countryIso2));
         }
-    }, [country, dispatch, countryOptions]);
+    }, [dispatch, countryIso2]);
 
-    const provinceOptions =
-        province?.map((prov) => ({
-            id: prov.id,
-            label: prov.name,
-            value: prov.iso2,
-        })) || [];
+    // Fetch cities when province changes
+    useEffect(() => {
+        if (provinceIso2 && countryIso2) {
+            dispatch(fetchCities({ ciso: countryIso2, piso: provinceIso2 }));
+        }
+    }, [dispatch, provinceIso2, countryIso2]);
 
     return (
         <React.Fragment>
             {loading && <Loading />}
             <form
-                className="h-17/20 w-[40rem] bg-white rounded-lg border"
+                className="h-auto w-[40rem] bg-white rounded-lg border pb-8 my-10"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className="w-full flex flex-col justify-center items-center pt-8 gap-1">
@@ -159,7 +215,11 @@ export const RegisterForm = () => {
                             placeholder="Select Country"
                             register={register}
                             loading={countriesLoading}
-                            rules={{ required: 'required' }}
+                            rules={{
+                                required: countryOptions.length
+                                    ? 'required'
+                                    : false,
+                            }}
                             error={errors.country?.message}
                         />
                         <Select
@@ -168,17 +228,26 @@ export const RegisterForm = () => {
                             options={provinceOptions}
                             placeholder="Select State/Province"
                             register={register}
-                            loading={provinceLoading}
-                            rules={{ required: 'required' }}
+                            loading={provincesLoading}
+                            rules={{
+                                required: provinceOptions.length
+                                    ? 'required'
+                                    : false,
+                            }}
                             error={errors.province?.message}
                         />
                         <Select
                             name="city"
                             label={'City'}
-                            options={GENDER}
+                            options={cityOptions}
                             placeholder="Select City"
                             register={register}
-                            rules={{ required: 'required' }}
+                            loading={citiesLoading}
+                            rules={{
+                                required: cityOptions.length
+                                    ? 'required'
+                                    : false,
+                            }}
                             error={errors.city?.message}
                         />
                     </div>

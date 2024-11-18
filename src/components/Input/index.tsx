@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InputProps } from '../../types';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MdError } from 'react-icons/md';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 export const Input = ({
     name,
@@ -15,6 +16,12 @@ export const Input = ({
     rules,
     ...props
 }: InputProps) => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible((prevState) => !prevState);
+    };
+
     return (
         <div className="flex flex-col w-full">
             <div className="flex justify-between">
@@ -39,17 +46,38 @@ export const Input = ({
                     )}
                 </AnimatePresence>
             </div>
-            <input
-                type={type}
-                id={name}
-                placeholder={placeholder}
-                className={cn(
-                    `h-12 w-full text-sm border ${error ? 'border-red-500 focus:outline-none' : 'border-borderColor'} rounded-md mx-0 my-2 px-4 py-0 mt-1`,
-                    className
+            <div className="relative">
+                <input
+                    type={
+                        type === 'password'
+                            ? !passwordVisible
+                                ? 'password'
+                                : 'text'
+                            : type
+                    }
+                    id={name}
+                    placeholder={placeholder}
+                    className={cn(
+                        `h-12 w-full text-sm border ${error ? 'border-red-500 focus:outline-none' : 'border-borderColor'} rounded-md mx-0 my-2 px-4 py-0 mt-1`,
+                        className
+                    )}
+                    {...register(name, rules)}
+                    {...props}
+                />
+                {type === 'password' && (
+                    <button
+                        type="button"
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                        onClick={togglePasswordVisibility}
+                    >
+                        {passwordVisible ? (
+                            <FaEyeSlash className="text-[22px]" />
+                        ) : (
+                            <FaEye className="text-xl" />
+                        )}
+                    </button>
                 )}
-                {...register(name, rules)}
-                {...props}
-            />
+            </div>
         </div>
     );
 };
