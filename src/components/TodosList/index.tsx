@@ -4,10 +4,11 @@ import { Todo, TodosListProps } from '../../types';
 import { capitalizeFirstLetter } from '../../lib/utils';
 import useDeleteTodo from '../../hooks/todo/userDeleteTodo';
 import { useUpdateTodoStatus } from '../../hooks/todo/useUpdateTodoStatus';
+import { useAuth } from '../../hooks/auth/useAuth';
 
 export const TodosList = ({ userTodos }: TodosListProps) => {
-    //TODO: Use redux to store and get this user data
-    const userId = 'user1';
+    const { user } = useAuth();
+    const userId = user?.uid ?? '';
     const [loading, setLoading] = useState<boolean>(false);
     const { handleDeleteTodo } = useDeleteTodo({ userId, setLoading });
     const { handleUpdateTodoStatus } = useUpdateTodoStatus({

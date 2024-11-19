@@ -4,12 +4,16 @@ import { TodosSidebar } from '../../components/TodosSidebar';
 import { TodosList } from '../../components/TodosList';
 import useUserTodos from '../../hooks/todo/useUserTodos';
 import { Loading } from '../../components/Loading';
+import { useAuth } from '../../hooks/auth/useAuth';
 
 export const Todo = () => {
-    //TODO: Use redux to store and get this user data
-    const userId = 'user1';
-    const { userTodos, loading } = useUserTodos(userId);
+    const { user } = useAuth();
 
+    const { userTodos, loading } = useUserTodos(user?.uid ?? '');
+
+    if (!user) {
+        userTodos.length = 0;
+    }
     const totalTodosCount: number = useMemo(
         () => userTodos.length,
         [userTodos]

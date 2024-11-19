@@ -5,11 +5,12 @@ import useAddTodo from '../../hooks/todo/useAddTodo';
 import { Loading } from '../Loading';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { TodoFormData } from '../../types';
+import { useAuth } from '../../hooks/auth/useAuth';
 
 export const AddTodoForm = () => {
-    //TODO: Use redux to store and get this user data
-    const userId = 'user1';
-    const { handleAddTodo, loading } = useAddTodo(userId);
+    const { user } = useAuth();
+
+    const { handleAddTodo, loading } = useAddTodo(user?.uid ?? '');
     const {
         register,
         handleSubmit,

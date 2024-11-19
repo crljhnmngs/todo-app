@@ -127,3 +127,12 @@ export type Options = {
     label: string;
     value: string;
 };
+
+export type LoginFormData = {
+    email: string;
+    password: string;
+};
+
+export type AuthContextProps = {
+    user: User | null;
+};

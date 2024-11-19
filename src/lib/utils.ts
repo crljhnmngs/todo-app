@@ -20,6 +20,19 @@ export const handleError = (error: any, actionDescription: string) => {
         case 'auth/weak-password':
             message = 'The password must be 6 characters long or more.';
             break;
+        case 'auth/user-not-found':
+            message = 'User not found. Please check your email.';
+            break;
+        case 'auth/invalid-credential':
+            message =
+                'The provided credentials are invalid. Please check and try again.';
+            break;
+        case 'auth/wrong-password':
+            message = 'Incorrect password.';
+            break;
+        case 'auth/too-many-requests':
+            message = 'Too many requests. Please try again later.';
+            break;
         default:
             message = `Failed to complete ${actionDescription}. Please try again later.`;
             break;

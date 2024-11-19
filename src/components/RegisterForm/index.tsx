@@ -70,6 +70,7 @@ export const RegisterForm = () => {
     );
 
     // Reset form on successful registration
+    /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
         if (success) {
             reset();
@@ -77,6 +78,7 @@ export const RegisterForm = () => {
             cityOptions.length = 0;
         }
     }, [success, reset]);
+    /* eslint-enable react-hooks/exhaustive-deps */
 
     // Fetch countries on mount
     useEffect(() => {

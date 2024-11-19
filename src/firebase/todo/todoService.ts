@@ -25,6 +25,7 @@ export const onUserTodosUpdate = (
 ): (() => void) => {
     const todosRef = ref(db, `${TODO_APP_COLLECTION}/userTodos/${userId}`);
     try {
+        /* eslint-disable*/
         const unsubscribe = onValue(
             todosRef,
             (snapshot: DataSnapshot) => {
@@ -40,6 +41,7 @@ export const onUserTodosUpdate = (
                     callback({ success: true, data: [] });
                 }
             },
+            /* eslint-enable*/
             (error) => {
                 callback({
                     success: false,

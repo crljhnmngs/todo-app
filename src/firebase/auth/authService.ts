@@ -3,6 +3,8 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
+    onAuthStateChanged,
+    User,
 } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
 import { handleError } from '../../lib/utils';
@@ -48,8 +50,8 @@ export const saveUserInfo = async (
         const userRef = ref(db, `${TODO_APP_COLLECTION}/users/${userId}`);
         await set(userRef, userInfo);
         return { success: true, message: 'Registration successful' };
-    } catch (error) {
-        return handleError(error, 'registration');
+    } catch (error: any) {
+        return handleError(error.code, 'registration');
     }
 };
 
@@ -65,8 +67,8 @@ export const loginUser = async (email: string, password: string) => {
             user: userCredential.user,
             message: 'Login successful',
         };
-    } catch (error) {
-        return handleError(error, 'logging in');
+    } catch (error: any) {
+        return handleError(error.code, 'logging in');
     }
 };
 
@@ -74,7 +76,17 @@ export const logoutUser = async () => {
     try {
         await signOut(auth);
         return { success: true, message: 'Logout successful' };
-    } catch (error) {
-        return handleError(error, 'logging out');
+    } catch (error: any) {
+        return handleError(error.code, 'logging out');
     }
+};
+
+export const onAuthStateChange = (
+    callback: (user: User | null) => void
+): (() => void) => {
+    return onAuthStateChanged(auth, callback);
+};
+
+export const getCurrentUser = (): User | null => {
+    return auth.currentUser;
 };
