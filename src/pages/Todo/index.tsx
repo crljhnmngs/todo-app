@@ -11,9 +11,6 @@ export const Todo = () => {
 
     const { userTodos, loading } = useUserTodos(user?.uid ?? '');
 
-    if (!user) {
-        userTodos.length = 0;
-    }
     const totalTodosCount: number = useMemo(
         () => userTodos.length,
         [userTodos]

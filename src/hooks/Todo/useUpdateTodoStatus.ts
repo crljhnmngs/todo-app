@@ -1,6 +1,7 @@
 import { updateTodoStatus } from '../../firebase/todo/todoService';
 import { UseTodosHookProps } from '../../types';
 import { customToast } from '../../lib/utils';
+import { updateLocalTodo } from '../../localStorage/todo/todoService';
 
 export const useUpdateTodoStatus = ({
     userId,
@@ -9,15 +10,19 @@ export const useUpdateTodoStatus = ({
     const handleUpdateTodoStatus = async (todoId: string, status: boolean) => {
         setLoading(true);
         try {
-            const response = await updateTodoStatus({
-                userId,
-                todoId,
-                updates: {
-                    isCompleted: status,
-                },
-            });
-            if (!response.success) {
-                customToast({ message: response.message, type: 'error' });
+            if (userId) {
+                const response = await updateTodoStatus({
+                    userId,
+                    todoId,
+                    updates: {
+                        isCompleted: status,
+                    },
+                });
+                if (!response.success) {
+                    customToast({ message: response.message, type: 'error' });
+                }
+            } else {
+                updateLocalTodo(todoId, status);
             }
         } catch (err) {
             customToast({
