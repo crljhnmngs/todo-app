@@ -22,6 +22,9 @@ module.exports = {
                 '19/20': '95%',
                 '17/20': '85%',
             },
+            screens: {
+                xs: '520px',
+            },
         },
     },
     plugins: [],

@@ -7,7 +7,7 @@ export const Navigation = () => {
     const location = useLocation();
     return (
         <div>
-            <ul className="flex gap-9 mr-3">
+            <ul className="flex gap-4 xs:gap-9 xs:mr-3">
                 <Link to={ROUTES.TODO} className="hover:underline">
                     Todo
                 </Link>

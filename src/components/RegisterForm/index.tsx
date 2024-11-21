@@ -160,19 +160,19 @@ export const RegisterForm = () => {
         <React.Fragment>
             {loading && <Loading />}
             <form
-                className="h-auto w-[40rem] bg-white rounded-lg border pb-8 my-10"
+                className="h-auto w-auto mx-3 sm:w-[39rem] bg-white rounded-lg border pb-8 my-10"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className="w-full flex flex-col justify-center items-center pt-8 gap-1">
-                    <span className="font-semibold text-3xl">
+                    <span className="font-semibold text-2xl xs:text-3xl">
                         Registration Form
                     </span>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-[11px] xs:text-sm text-gray-600">
                         Fill out the form carefully for registration
                     </span>
                 </div>
-                <div className="w-full px-9 mt-10 flex flex-col gap-4">
-                    <div className="flex gap-5">
+                <div className="w-full px-4 xs:px-9 mt-10 flex flex-col gap-2 xs:gap-4">
+                    <div className="flex gap-1 xs:gap-5 flex-col xs:flex-row">
                         <Input
                             name="firstname"
                             type="text"
@@ -190,7 +190,7 @@ export const RegisterForm = () => {
                             error={errors.lastname?.message}
                         />
                     </div>
-                    <div className="flex gap-5">
+                    <div className="flex gap-1 xs:gap-5 flex-col xs:flex-row">
                         <Select
                             name="gender"
                             label={'Gender'}
@@ -209,7 +209,7 @@ export const RegisterForm = () => {
                             error={errors.age?.message}
                         />
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1 sm:gap-2 flex-col sm:flex-row">
                         <Select
                             name="country"
                             label={'Country'}
@@ -264,7 +264,7 @@ export const RegisterForm = () => {
                         />
                     </div>
                     <div className="flex flex-col">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 flex-col xs:flex-row">
                             <Input
                                 name="password"
                                 type="password"
