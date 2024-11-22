@@ -20,7 +20,7 @@ export const TodosSidebar = () => {
         }
     };
     return (
-        <div className="bg-[#fefdf8] border-l border-b-borderColor flex flex-col justify-between px-5 py-5">
+        <div className="bg-[#fefdf8] border-l border-b-borderColor hidden md:flex flex-col justify-between px-5 py-5">
             <AddTodoForm />
             <div className="space-y-2">
                 {user ? (

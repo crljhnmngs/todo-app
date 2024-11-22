@@ -8,7 +8,7 @@ export const TodosHeader = ({
     totalCompletedTodosCount,
 }: TodosHeaderProps) => {
     return (
-        <div className="h-16 col-span-2 bg-[#fcf5ed] flex items-center justify-between px-9">
+        <div className="h-16 col-span-2 bg-[#fcf5ed] flex items-center justify-between px-5 xs:px-9">
             <Logo />
             <Counter
                 totalTodosCount={totalTodosCount}
