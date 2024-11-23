@@ -9,6 +9,7 @@ This is a simple todo app, built using React, TypeScript, Firebase, and other mo
 -   **User Authentication**: Users can register, log in, and manage their todos securely with Firebase Authentication.
 -   **User-Specific Todos**: Once logged in, users can manage their todos that are stored in Firebase, ensuring that their data is accessible across devices.
 -   **Real-time Sync**: Todos in Firebase are synchronized in real-time, ensuring updates are reflected instantly across all devices.
+-   **Responsive Design**: The app is fully responsive and optimized for mobile and desktop use.
 
 ## Technologies
 
