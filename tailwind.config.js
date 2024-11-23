@@ -16,11 +16,15 @@ module.exports = {
             },
             letterSpacing: {
                 tightest: '-40px',
+                small: '-20px',
             },
             spacing: {
                 '9/10': '90%',
                 '19/20': '95%',
                 '17/20': '85%',
+            },
+            screens: {
+                xs: '520px',
             },
         },
     },

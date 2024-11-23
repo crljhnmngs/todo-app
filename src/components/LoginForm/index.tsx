@@ -39,11 +39,11 @@ export const LoginForm = () => {
         <React.Fragment>
             {loading && <Loading />}
             <form
-                className="h-auto w-[30rem] bg-white rounded-lg border pb-8 my-10"
+                className="h-auto w-[25rem] xs:w-[30rem] bg-white rounded-lg border pb-8 my-10 mx-4 xs:mx-0"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className="w-full flex flex-col justify-center items-center pt-8 gap-1">
-                    <span className="font-semibold text-3xl">
+                    <span className="font-semibold text-xl xs:text-3xl">
                         Login to your account
                     </span>
                 </div>

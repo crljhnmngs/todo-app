@@ -8,13 +8,13 @@ import { useAuth } from '../../hooks/auth/useAuth';
 
 export const Todo = () => {
     const { user } = useAuth();
-
     const { userTodos, loading } = useUserTodos(user?.uid ?? '');
 
     const totalTodosCount: number = useMemo(
         () => userTodos.length,
         [userTodos]
     );
+
     const totalCompletedTodosCount: number = useMemo(
         () => userTodos.filter((todo) => todo.isCompleted).length,
         [userTodos]
@@ -24,7 +24,7 @@ export const Todo = () => {
         <React.Fragment>
             {loading && <Loading />}
             <div className="h-screen w-screen bg-primaryBG flex items-center justify-center">
-                <main className="relative w-[60.5rem] h-[39rem] bg-white rounded-lg overflow-hidden grid grid-rows-[auto_1fr] grid-cols-[1fr_320px] shadow-[0_4px_4px_borderColor]">
+                <main className="w-[60.5rem] h-[39rem] bg-white rounded-lg overflow-hidden md:grid grid-rows-[auto_1fr] grid-cols-[1fr_320px] shadow-[0_4px_4px_borderColor] mx-4 relative">
                     <TodosHeader
                         totalTodosCount={totalTodosCount}
                         totalCompletedTodosCount={totalCompletedTodosCount}

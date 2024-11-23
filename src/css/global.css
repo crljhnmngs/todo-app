@@ -33,3 +33,7 @@ body {
 .notFound > span {
     text-shadow: -8px 0px 0px #fff;
 }
+
+.hamburger-react {
+    margin-right: -22px;
+}

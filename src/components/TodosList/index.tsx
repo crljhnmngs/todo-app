@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Loading } from '../../components/Loading';
 import { Todo, TodosListProps } from '../../types';
 import { capitalizeFirstLetter } from '../../lib/utils';
-import useDeleteTodo from '../../hooks/todo/userDeleteTodo';
+import useDeleteTodo from '../../hooks/todo/useDeleteTodo';
 import { useUpdateTodoStatus } from '../../hooks/todo/useUpdateTodoStatus';
 import { useAuth } from '../../hooks/auth/useAuth';
 
@@ -19,7 +19,7 @@ export const TodosList = ({ userTodos }: TodosListProps) => {
     return (
         <React.Fragment>
             {loading && <Loading />}
-            <div className="bg-white">
+            <div className="bg-white h-[90%] md:h-full overflow-auto">
                 {userTodos.length === 0 && (
                     <p className="h-full flex justify-center items-center font-semibold">
                         Start by adding a todo
